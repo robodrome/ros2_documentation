@@ -5,6 +5,13 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-20.04
+    # By default, I believe that Github actions use sh, and not bash,
+    # to run each step.  But we really want bash so that we get pipefail
+    # behavior, so set the default to bash.  See
+    # https://github.com/actions/runner/issues/353 for more information.
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v2
 
@@ -17,5 +24,21 @@ jobs:
         run: |
           pip install --no-warn-script-location --user --upgrade -r requirements.txt
 
-      - run: make html
-      - run: make test
+      # This step runs the build process and collects the output into a variable.
+      # We have to process that variable through jq to make a JSON object to work
+      # around a GitHub limitation of carriage returns in output; see
+      # https://github.community/t/set-output-truncates-multiline-strings/16852/8
+      # for a discussion and the origin of this workaround.
+      - name: Build output
+        id: build
+        run: |
+          msg=$(make html 2>&1 | jq --raw-input --slurp '.')
+          echo "::set-output name=OUTPUT::$msg"
+
+      - name: Check output for error
+        run: |
+          count=$(echo "${{ fromJSON(steps.build.outputs.OUTPUT) }}" | grep -c -i warning) || true
+          if [ "$count" -gt 0 ]; then exit 1; fi
+
+      - name: Run tests
+        run: make test
