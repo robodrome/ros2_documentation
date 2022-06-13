@@ -3,7 +3,7 @@
 #
 # docker build -f docker/image/Dockerfile .
 
-FROM ubuntu:focal
+FROM ubuntu:jammy
 
 ARG user=rosindex
 ARG uid=1000
@@ -15,7 +15,13 @@ RUN apt-get update && \
         git-all \
         graphviz \
         make \
-        python3-pip && \
+        python3-doc8 \
+        python3-docutils \
+        python3-pip \
+        python3-sphinx \
+        python3-sphinx-copybutton \
+        python3-sphinx-rtd-theme \
+        python3-sphinx-tabs && \
     rm -rf /var/lib/apt/lists/*
 
 RUN useradd -u $uid -m $user
