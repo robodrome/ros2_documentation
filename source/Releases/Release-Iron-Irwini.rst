@@ -41,12 +41,50 @@ To come.
 New features in this ROS 2 release
 ----------------------------------
 
-To come.
+Service Introspection
+^^^^^^^^^^^^^^^^^^^^^
+
+Services can now be echoed using ``ros2 service echo`` and recorded via ``ros2 bag record --services``.
+
+* `REP2012: Service Introspection`_. 
+
+   .. _`REP2012: Service Introspection`: https://github.com/ros-infrastructure/rep/pull/360
+
+
+rosidl fixes
+^^^^^^^^^^^^
+
+Packages defining actions no longer need to ``<depend>`` on the action_msgs package.
+
+
 
 Changes since the Humble release
 ----------------------------------
 
-To come.
+rmw
+^^^
+- RMW_GID_STORAGE_SIZE: Changed from 24 to 16 (`rmw#328`_)
+
+.. _`rmw#328`: https://github.com/ros2/rmw/pull/328
+
+rcl
+^^^
+
+- Services and clients take a clock handle in their respective options struct if service introspection is to be enabled (`rcl#997`_)
+
+.. _`rcl#997`: https://github.com/ros2/rcl/pull/997
+
+rosidl
+^^^^^^
+
+- ``rosidl_defaults`` has been split into ``rosidl_core`` and ``rosidl_defaults`` to correct dependency loops (`rosidl_defaults#22`_)
+- Services now generate a new ``_Event`` message 
+
+    - ``rosidl_service_typesupport_t`` now includes methods for creating and destroying said event message (`rosidl#700`_)
+
+.. _`rosidl#700`: https://github.com/ros2/rosidl/pull/700
+.. _`rosidl_defaults#22`: https://github.com/ros2/rosidl_defaults/pull/22
+
 
 Known Issues
 ------------
