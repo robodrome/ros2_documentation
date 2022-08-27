@@ -46,7 +46,7 @@ Service Introspection
 
 Services can now be echoed using ``ros2 service echo`` and recorded via ``ros2 bag record --services``.
 
-* `REP2012: Service Introspection`_. 
+* `REP2012: Service Introspection`_.
 
    .. _`REP2012: Service Introspection`: https://github.com/ros-infrastructure/rep/pull/360
 
@@ -78,7 +78,7 @@ rosidl
 ^^^^^^
 
 - ``rosidl_defaults`` has been split into ``rosidl_core`` and ``rosidl_defaults`` to correct dependency loops (`rosidl_defaults#22`_)
-- Services now generate a new ``_Event`` message 
+- Services now generate a new ``_Event`` message
 
     - ``rosidl_service_typesupport_t`` now includes methods for creating and destroying said event message (`rosidl#700`_)
 
